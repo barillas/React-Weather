@@ -25037,7 +25037,7 @@
 
 	    function renderError() {
 	      if (typeof errorMessage === 'string') {
-	        return React.createElement(ErrorModal, null);
+	        return React.createElement(ErrorModal, { message: errorMessage });
 	      }
 	    }
 
@@ -25142,46 +25142,59 @@
 	$(document).foundation();
 
 	var ErrorModal = React.createClass({
-	    displayName: 'ErrorModal',
+	  displayName: 'ErrorModal',
 
-	    componentDidMount: function componentDidMount() {
-	        var modal = new Foundation.Reveal($('#error-modal'));
-	        modal.open();
-	    },
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            { id: 'error-modal', className: 'reveal tiny text-center', 'data-reveal': '' },
-	            React.createElement(
-	                'button',
-	                { className: 'close-button text-right', 'aria-label': 'Close alert', type: 'button', 'data-close': '' },
-	                React.createElement(
-	                    'span',
-	                    { 'aria-hidden': 'true' },
-	                    '×'
-	                )
-	            ),
-	            React.createElement(
-	                'h4',
-	                null,
-	                'Some Title'
-	            ),
-	            React.createElement(
-	                'p',
-	                null,
-	                'Error Message!'
-	            ),
-	            React.createElement(
-	                'p',
-	                null,
-	                React.createElement(
-	                    'button',
-	                    { className: 'button hollow', 'data-close': '' },
-	                    'Okay'
-	                )
-	            )
-	        );
-	    }
+
+	  getDefaultProps: function getDefaultProps() {
+	    title: 'Error';
+	  },
+
+	  propTypes: {
+	    title: React.PropTypes.string,
+	    message: React.PropTypes.string.isRequired
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var modal = new Foundation.Reveal($('#error-modal'));
+	    modal.open();
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var title = _props.title;
+	    var message = _props.message;
+
+	    return React.createElement(
+	      'div',
+	      { id: 'error-modal', className: 'reveal tiny text-center', 'data-reveal': '' },
+	      React.createElement(
+	        'button',
+	        { className: 'close-button text-right', 'aria-label': 'Close alert', type: 'button', 'data-close': '' },
+	        React.createElement(
+	          'span',
+	          { 'aria-hidden': 'true' },
+	          '×'
+	        )
+	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        title
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        message
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        React.createElement(
+	          'button',
+	          { className: 'button hollow', 'data-close': '' },
+	          'Okay'
+	        )
+	      )
+	    );
+	  }
 	});
 
 	module.exports = ErrorModal;
