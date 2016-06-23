@@ -24897,7 +24897,14 @@
 
 	    onSearch: function onSearch(e) {
 	        e.preventDefault();
-	        alert('Not Yet Wired Up');
+	        var location = this.refs.search.value;
+	        var encodedLocation = encodeURIComponent(location);
+
+	        if (location.length > 0) {
+
+	            this.refs.search.value = "";
+	            window.location.hash = '#/?location=' + encodedLocation;
+	        }
 	    },
 
 	    render: function render() {
@@ -24962,7 +24969,7 @@
 	                        React.createElement(
 	                            'li',
 	                            null,
-	                            React.createElement('input', { type: 'search', placeholder: 'Search Weather' })
+	                            React.createElement('input', { type: 'search', placeholder: 'Search Weather', ref: 'search' })
 	                        ),
 	                        React.createElement(
 	                            'li',
@@ -25003,7 +25010,9 @@
 	    var that = this;
 	    this.setState({
 	      isLoading: true,
-	      errorMessage: undefined
+	      errorMessage: undefined,
+	      location: undefined,
+	      temp: undefined
 	    });
 
 	    openWeatherMap.getTemp(location).then(function (temp) {
@@ -25019,6 +25028,25 @@
 	      });
 	    });
 	  },
+	  componentDidMount: function componentDidMount() {
+	    var location = this.props.location.query.location;
+
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.has = "#/";
+	    }
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+
+	    var location = newProps.location.query.location;
+
+	    if (location && location.length > 0) {
+	      this.handleSearch(location);
+	      window.location.has = "#/";
+	    }
+	  },
+
 	  render: function render() {
 	    var _state = this.state;
 	    var isLoading = _state.isLoading;
@@ -26901,7 +26929,7 @@
 	        null,
 	        React.createElement(
 	          Link,
-	          { to: '/?Miami' },
+	          { to: '/?location=Miami' },
 	          'Miami'
 	        )
 	      ),
@@ -26910,7 +26938,7 @@
 	        null,
 	        React.createElement(
 	          Link,
-	          { to: '/?Los%Angeles' },
+	          { to: '/?location=Los%Angeles' },
 	          'Los Angeles'
 	        )
 	      )
