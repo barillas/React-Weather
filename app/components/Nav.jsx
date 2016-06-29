@@ -1,8 +1,6 @@
 var React = require('react');
 var {Link, IndexLink} = require('react-router');
 
-var Nav = (props) => {}
-
 var Nav = React.createClass({
 
     onSearch: function(e){
